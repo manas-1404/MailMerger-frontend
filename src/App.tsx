@@ -1,18 +1,17 @@
-import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
+
+import Dashboard from "./Dashboard.tsx";
+import Home from "./routes/Home.tsx";
 import './App.css'
 
 function App() {
-  // @ts-ignore
-    const [count, setCount] = useState(0)
-
-    const handleLogin = async () => {
-        window.location.href = "http://localhost:8000/api/oauth/gmail-authorize"
-    }
-
+  
   return (
     <>
-        <h1>Welcome to mail merger!</h1>
-        <button onClick={handleLogin}>Log in with Google</button>
+        <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
     </>
   )
 }
