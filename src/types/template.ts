@@ -4,3 +4,7 @@ export type Template = {
     t_body: string,
     t_key: string,
 }
+
+export type ListOfTemplates = {
+    templates: Template[];
+}
