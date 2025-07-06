@@ -112,6 +112,90 @@ function WriteEmail( {templates}: ListOfTemplates ) {
         setMapping(clearedMapping);
     }
 
+    const isEmailValid = (): boolean => {
+        const { to_email, subject, body } = formData;
+
+        //checking basic required fields
+        if (!to_email.trim() || !subject.trim() || !body.trim()) {
+            return false;
+        }
+
+        //checking that all template values are filled
+        if (Object.keys(mapping).length > 0) {
+            for (const value of Object.values(mapping)) {
+                if (!value || value.trim().length === 0) {
+                    return false;
+                }
+            }
+
+            //checking if the mail merge has actually occurred
+            const templatePlaceholderPattern = /{{\s*[\w]+\s*}}/g;
+            if (templatePlaceholderPattern.test(body)) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+
+
+    const handleSendNow = async () => {
+        if (!isEmailValid()) {
+            alert("Please fill out all required fields and complete the template if selected.");
+            return;
+        }
+
+        try {
+            // TODO: add method from the utils to call backend aip
+            console.log("Sending email...\n", formData);
+            alert("Email sent successfully!");
+
+            setMapping({});
+            setFormData({
+                to_email: "",
+                cc_email: "",
+                bcc_email: "",
+                subject: "",
+                body: "",
+            });
+            setTemplateBackup("");
+            setInvalidMappingKeys([]);
+
+        } catch (err) {
+            console.error("Send failed", err);
+            alert("Failed to send email.");
+        }
+    };
+
+    const handleAddToQueue = async () => {
+        if (!isEmailValid()) {
+            alert("Please fill out all required fields and complete the template if selected.");
+            return;
+        }
+
+        try {
+            // TODO: add method from the utils to call backend aip
+            console.log("Sending email...\n", formData);
+            alert("Email added to queue!");
+
+            setMapping({});
+            setFormData({
+                to_email: "",
+                cc_email: "",
+                bcc_email: "",
+                subject: "",
+                body: "",
+            });
+            setTemplateBackup("");
+            setInvalidMappingKeys([]);
+        } catch (err) {
+            console.error("Queue failed", err);
+            alert("Failed to add email to queue.");
+        }
+    };
+
+
+
     return (
         <div className="flex flex-col h-screen text-white">
 
@@ -119,7 +203,7 @@ function WriteEmail( {templates}: ListOfTemplates ) {
 
                 {/* left side - Email Details */}
                 <div className="flex flex-col w-[43%] p-6 space-y-6 overflow-y-auto border-r border-gray-700">
-                    <h1 className="text-3xl font-bold mb-4">✉️ Write Email</h1>
+                    <h2 className="text-3xl font-bold mb-4">✉️ Write Email</h2>
 
                     <div className="grid grid-cols-1 gap-4">
                         {["to_email", "cc_email", "bcc_email", "subject"].map((field) => (
@@ -200,10 +284,16 @@ function WriteEmail( {templates}: ListOfTemplates ) {
 
             {/* bottom buttons */}
             <div className="flex h-[10%] justify-end gap-4 p-3 pr-8 border-t border-gray-700 bg-gray-900">
-                <button className="bg-yellow-600 hover:bg-yellow-700 px-6 py-2 rounded">
+                <button
+                    className="bg-yellow-600 hover:bg-yellow-700 px-6 py-2 rounded"
+                    onClick={handleAddToQueue}
+                >
                     🕒 Add to Queue
                 </button>
-                <button className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded">
+                <button
+                    className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded"
+                    onClick={handleSendNow}
+                >
                     🚀 Send Now
                 </button>
             </div>
