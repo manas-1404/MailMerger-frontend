@@ -1,6 +1,8 @@
 import { useState } from "react";
 import type {Email} from "../types/email.ts";
-import type {ListOfTemplates} from "../types/template.ts";
+import type {ListOfTemplates, Template} from "../types/template.ts";
+
+import KeyValueCard from "../components/KeyValueCard.tsx";
 
 function WriteEmail( {templates}: ListOfTemplates ) {
     const [formData, setFormData] = useState<Email>({
@@ -11,6 +13,8 @@ function WriteEmail( {templates}: ListOfTemplates ) {
         body: "",
     });
 
+    const [mapping, setMapping] = useState<Record<string, string>>({});
+
     // Handle input changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -18,15 +22,49 @@ function WriteEmail( {templates}: ListOfTemplates ) {
     };
 
     const handleTemplateDropdown = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedDropDownValue = e.target.value;
-        const selectedTemplate = templates.find(t => t.tid === Number(selectedDropDownValue));
+        const selectedDropDownValue: string = e.target.value;
+        const selectedTemplate: Template | undefined = templates.find(t => t.tid === Number(selectedDropDownValue));
 
         if (selectedTemplate) {
+
+            //update the mapping state with the template keys selected by the user through the dropdown
+            const mappingKeys: string[] = selectedTemplate.t_key.split(",").map(key => key.trim());
+
+            //update the mapping state to have a new object with new keys everytime a template is selected or changed
+            const newMapping: Record<string, string> = {};
+            mappingKeys.forEach(key => {
+                newMapping[key] = "";
+            });
+            setMapping(newMapping);
+
+
             setFormData({
                 ...formData,
                 body: selectedTemplate.t_body
             })
         }
+    }
+
+    const updateValueCallback = (t_key: string, newValue: string) => {
+        console.log("Updating key:", t_key, "with value:", newValue);
+        setMapping(prevState => {
+            return {...prevState, [t_key]: newValue};
+            }
+        );
+    }
+
+    const handleMailMerge = () => {
+        let mergedBody = formData.body;
+
+        for (const [key, value] of Object.entries(mapping)) {
+            const pattern = new RegExp(`{{\\s*${key}\\s*}}`, "g");
+            mergedBody = mergedBody.replace(pattern, value);
+        }
+
+        setFormData(prevState => {
+            return {...prevState, body: mergedBody};
+        })
+
     }
 
     return (
@@ -74,6 +112,27 @@ function WriteEmail( {templates}: ListOfTemplates ) {
                     </option>
                 ))}
             </select>
+
+            {Object.keys(mapping).length > 0 && (
+                <div className="mt-10 p-6 rounded bg-gray-900 border border-gray-700 space-y-4">
+                    <h2 className="text-xl font-bold text-white">🔁 Map Template Keys</h2>
+                    {Object.entries(mapping).map(([key, value], index) => (
+                        <KeyValueCard
+                            key={index}
+                            t_key={key}
+                            t_value={value}
+                            onValueChange={updateValueCallback}
+                        />
+                    ))}
+                </div>
+            )}
+
+            <button
+                className="bg-green-600 hover:bg-green-700 px-6 py-2 rounded"
+                onClick={handleMailMerge}
+            >
+                🔄 Mail Merge
+            </button>
 
             <div>
                 <label className="block mb-2 mt-4">Body</label>
