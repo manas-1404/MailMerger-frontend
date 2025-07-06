@@ -13,4 +13,5 @@ export type TemplateKeyValue = {
     t_key?: string,
     t_value?: string,
     onValueChange?: (parameter1: string, parameter2: string) => void;
+    isInvalid?: boolean;
 }

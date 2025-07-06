@@ -15,6 +15,8 @@ function WriteEmail( {templates}: ListOfTemplates ) {
 
     const [mapping, setMapping] = useState<Record<string, string>>({});
 
+    const [invalidMappingKeys, setInvalidMappingKeys] = useState<string[]>([]);
+
     // Handle input changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -46,7 +48,6 @@ function WriteEmail( {templates}: ListOfTemplates ) {
     }
 
     const updateValueCallback = (t_key: string, newValue: string) => {
-        console.log("Updating key:", t_key, "with value:", newValue);
         setMapping(prevState => {
             return {...prevState, [t_key]: newValue};
             }
@@ -54,6 +55,21 @@ function WriteEmail( {templates}: ListOfTemplates ) {
     }
 
     const handleMailMerge = () => {
+
+        const invalidKeys: string[] = [];
+
+        for (const [key, value] of Object.entries(mapping)) {
+            if (!value || value.trim().length === 0) {
+                invalidKeys.push(key);
+            }
+        }
+
+        if (invalidKeys.length > 0) {
+            setInvalidMappingKeys(invalidKeys);
+            return;
+        }
+
+
         let mergedBody = formData.body;
 
         for (const [key, value] of Object.entries(mapping)) {
@@ -122,6 +138,7 @@ function WriteEmail( {templates}: ListOfTemplates ) {
                             t_key={key}
                             t_value={value}
                             onValueChange={updateValueCallback}
+                            isInvalid={invalidMappingKeys.includes(key)}
                         />
                     ))}
                 </div>

@@ -1,6 +1,6 @@
 import type { TemplateKeyValue } from "../types/template.ts";
 
-function KeyValueCard({ t_key, t_value, onValueChange }: TemplateKeyValue) {
+function KeyValueCard({ t_key, t_value, onValueChange, isInvalid }: TemplateKeyValue) {
     return (
         <div className="flex items-center mb-4 gap-7">
             {t_key && (
@@ -10,7 +10,9 @@ function KeyValueCard({ t_key, t_value, onValueChange }: TemplateKeyValue) {
             )}
 
             <input
-                className={`${t_key ? "w-3/4" : "w-full"} bg-gray-800 text-white p-2 rounded`}
+                className={`${t_key ? "w-3/4" : "w-full"} bg-gray-800 text-white p-2 rounded ${
+                    isInvalid ? "border-2 border-red-500" : ""
+                }`}
                 value={t_value ?? ""}
                 onChange={(e) => {
                     if (onValueChange && t_key) {
@@ -18,7 +20,7 @@ function KeyValueCard({ t_key, t_value, onValueChange }: TemplateKeyValue) {
                     }
                 }}
                 placeholder={t_key ? `Enter value for ${t_key}` : "Enter value"}
-                required={true}
+                required
             />
         </div>
     );
