@@ -115,7 +115,7 @@ function WriteEmail( {templates}: ListOfTemplates ) {
     return (
         <div className="flex flex-col h-screen text-white">
 
-            <div className="flex flex-1 overflow-hidden">
+            <div className="flex h-[82%] overflow-hidden">
 
                 {/* left side - Email Details */}
                 <div className="flex flex-col w-[43%] p-6 space-y-6 overflow-y-auto border-r border-gray-700">
@@ -199,7 +199,7 @@ function WriteEmail( {templates}: ListOfTemplates ) {
             </div>
 
             {/* bottom buttons */}
-            <div className="flex justify-end gap-4 p-3 pr-8 border-t border-gray-700 bg-gray-900">
+            <div className="flex h-[10%] justify-end gap-4 p-3 pr-8 border-t border-gray-700 bg-gray-900">
                 <button className="bg-yellow-600 hover:bg-yellow-700 px-6 py-2 rounded">
                     🕒 Add to Queue
                 </button>
