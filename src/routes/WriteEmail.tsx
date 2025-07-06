@@ -17,6 +17,8 @@ function WriteEmail( {templates}: ListOfTemplates ) {
 
     const [invalidMappingKeys, setInvalidMappingKeys] = useState<string[]>([]);
 
+    const [templateBackup, setTemplateBackup] = useState<string>("");
+
     // Handle input changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -28,6 +30,8 @@ function WriteEmail( {templates}: ListOfTemplates ) {
         const selectedTemplate: Template | undefined = templates.find(t => t.tid === Number(selectedDropDownValue));
 
         if (selectedTemplate) {
+
+            setTemplateBackup(selectedTemplate.t_body);
 
             //update the mapping state with the template keys selected by the user through the dropdown
             const mappingKeys: string[] = selectedTemplate.t_key.split(",").map(key => key.trim());
@@ -83,6 +87,21 @@ function WriteEmail( {templates}: ListOfTemplates ) {
 
     }
 
+    const handleGoBackToTemplate = () => {
+        setFormData(prevState => {
+            return {...prevState, body: templateBackup};
+        });
+
+        setInvalidMappingKeys([]);
+
+        const clearedMapping: Record<string, string> = {};
+        Object.keys(mapping).forEach(key => {
+            clearedMapping[key] = "";
+        });
+
+        setMapping(clearedMapping);
+    }
+
     return (
         <div className="p-8 space-y-6 text-white">
             <h1 className="text-2xl font-bold">✉️ Write Email</h1>
@@ -130,26 +149,37 @@ function WriteEmail( {templates}: ListOfTemplates ) {
             </select>
 
             {Object.keys(mapping).length > 0 && (
-                <div className="mt-10 p-6 rounded bg-gray-900 border border-gray-700 space-y-4">
-                    <h2 className="text-xl font-bold text-white">🔁 Map Template Keys</h2>
-                    {Object.entries(mapping).map(([key, value], index) => (
-                        <KeyValueCard
-                            key={index}
-                            t_key={key}
-                            t_value={value}
-                            onValueChange={updateValueCallback}
-                            isInvalid={invalidMappingKeys.includes(key)}
-                        />
-                    ))}
-                </div>
-            )}
+                <>
+                    <div className="mt-10 p-6 rounded border space-y-4">
+                        <h2 className="text-xl font-bold text-white">Map Template Keys to Values</h2>
+                        {Object.entries(mapping).map(([key, value], index) => (
+                            <KeyValueCard
+                                key={index}
+                                t_key={key}
+                                t_value={value}
+                                onValueChange={updateValueCallback}
+                                isInvalid={invalidMappingKeys.includes(key)}
+                            />
+                        ))}
+                    </div>
 
-            <button
-                className="bg-green-600 hover:bg-green-700 px-6 py-2 rounded"
-                onClick={handleMailMerge}
-            >
-                🔄 Mail Merge
-            </button>
+                    <div className="flex gap-4">
+                        <button
+                            className="bg-gray-600 hover:bg-gray-700 px-6 py-2 rounded"
+                            onClick={handleGoBackToTemplate}
+                        >
+                            ⬅️ Back
+                        </button>
+
+                        <button
+                            className="bg-green-600 hover:bg-green-700 px-6 py-2 rounded"
+                            onClick={handleMailMerge}
+                        >
+                            🔄 Mail Merge
+                        </button>
+                    </div>
+                </>
+            )}
 
             <div>
                 <label className="block mb-2 mt-4">Body</label>
