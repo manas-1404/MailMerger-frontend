@@ -27,6 +27,16 @@ function WriteEmail( {templates}: ListOfTemplates ) {
 
     const handleTemplateDropdown = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedDropDownValue: string = e.target.value;
+
+        // the user selected default option, so remove everything or go back to normal
+        if (selectedDropDownValue === "-1") {
+            setMapping({});
+            setInvalidMappingKeys([]);
+            setTemplateBackup("");
+            setFormData(prev => ({ ...prev, body: "" }));
+            return;
+        }
+
         const selectedTemplate: Template | undefined = templates.find(t => t.tid === Number(selectedDropDownValue));
 
         if (selectedTemplate) {
@@ -111,7 +121,6 @@ function WriteEmail( {templates}: ListOfTemplates ) {
                 <div className="flex flex-col w-[43%] p-6 space-y-6 overflow-y-auto border-r border-gray-700">
                     <h1 className="text-3xl font-bold mb-4">✉️ Write Email</h1>
 
-                    {/* Recipient Fields */}
                     <div className="grid grid-cols-1 gap-4">
                         {["to_email", "cc_email", "bcc_email", "subject"].map((field) => (
                             <input
