@@ -1,8 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
 
+import Layout from "./components/Layout.tsx";
 import Dashboard from "./routes/Dashboard.tsx";
 import WriteEmail from "./routes/WriteEmail.tsx";
-import Home from "./routes/Home.tsx";
 import KeyValueCard from "./components/KeyValueCard.tsx";
 import './App.css'
 
@@ -45,10 +45,12 @@ function App() {
     return (
     <>
         <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/write-email" element={<WriteEmail templates={dummyTemplates}/>} />
-            <Route path="/make-template" element={<KeyValueCard />} />
+            <Route path="/" element={<Layout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="write-email" element={<WriteEmail templates={dummyTemplates} />} />
+                <Route path="make-template" element={<KeyValueCard />} />
+            </Route>
         </Routes>
     </>
   )
