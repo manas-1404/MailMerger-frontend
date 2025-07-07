@@ -3,8 +3,12 @@ import {getJwtTokenFromLocalStorage} from "./utils.ts";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
-export const oauthLogin = async () => {
+export const oauthSignup = () => {
     window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/oauth/gmail-authorize?purpose=signup`;
+};
+
+export const oauthLogin = async () => {
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/api/oauth/gmail-authorize?purpose=authorize`;
 }
 
 export const getNewJwtTokens = async () => {

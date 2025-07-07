@@ -6,6 +6,7 @@ import WriteEmail from "./routes/WriteEmail.tsx";
 import KeyValueCard from "./components/KeyValueCard.tsx";
 import './App.css'
 import Login from "./routes/Login.tsx";
+import Signup from "./routes/Signup.tsx";
 
 function App() {
 
@@ -47,6 +48,7 @@ function App() {
     <>
         <Routes>
             <Route path="/" element={<Layout />}>
+                <Route path="signup" element={<Signup />} />
                 <Route path="login" element={<Login />} />
                 <Route index element={<Dashboard />} />
                 <Route path="dashboard" element={<Dashboard />} />
