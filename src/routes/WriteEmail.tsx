@@ -3,6 +3,7 @@ import type {Email} from "../types/email.ts";
 import type {ListOfTemplates, Template} from "../types/template.ts";
 
 import KeyValueCard from "../components/KeyValueCard.tsx";
+import {sendEmailNow} from "../api/backend.ts";
 
 function WriteEmail( {templates}: ListOfTemplates ) {
     const [formData, setFormData] = useState<Email>({
@@ -113,7 +114,7 @@ function WriteEmail( {templates}: ListOfTemplates ) {
     }
 
     const isEmailValid = (): boolean => {
-        const { to_email, subject, body } = formData;
+        const { to_email, cc_email, bcc_email, subject, body } = formData;
 
         //checking basic required fields
         if (!to_email.trim() || !subject.trim() || !body.trim()) {
@@ -135,6 +136,27 @@ function WriteEmail( {templates}: ListOfTemplates ) {
             }
         }
 
+        //checking if the email addresses are valid
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const isValidEmails = (value: string): boolean => {
+            return value
+                .split(",")
+                .map(e => e.trim())
+                .every(email => emailRegex.test(email));
+        };
+
+        if (!isValidEmails(to_email)) {
+            return false;
+        }
+
+        if (cc_email && cc_email.trim() && !isValidEmails(cc_email)) {
+            return false;
+        }
+
+        if (bcc_email && bcc_email.trim() && !isValidEmails(bcc_email)) {
+            return false;
+        }
+
         return true;
     };
 
@@ -148,6 +170,11 @@ function WriteEmail( {templates}: ListOfTemplates ) {
         try {
             // TODO: add method from the utils to call backend aip
             console.log("Sending email...\n", formData);
+
+            const responseData = await sendEmailNow(formData);
+
+            console.log("Email sent successfully:", responseData);
+
             alert("Email sent successfully!");
 
             setMapping({});
