@@ -1,5 +1,5 @@
 import type {Email} from "../types/email.ts";
-import {getJwtTokenFromLocalStorage} from "./utils.ts";
+import {getJwtTokenFromLocalStorage, getRefreshTokenFromLocalStorage} from "./utils.ts";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -13,11 +13,18 @@ export const oauthLogin = async () => {
 
 export const getNewJwtTokens = async () => {
     const response = await fetch(`${BASE_URL}/api/auth/refresh-jwt-token`, {
-        credentials: "include",
+        // credentials: "include",
         method: "GET",
+        headers:{
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${getRefreshTokenFromLocalStorage()}`
+        }
     });
 
+    console.log("Refresh token is: ", getRefreshTokenFromLocalStorage());
+
     if (!response.ok) {
+        console.log(response);
         throw new Error("Failed to refresh JWT token");
     }
 
