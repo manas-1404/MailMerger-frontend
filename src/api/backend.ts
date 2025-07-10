@@ -74,13 +74,13 @@ export const addToEmailQueue = async (email: Email) => {
         });
 
         if (!response.ok) {
-            throw new Error("Failed to send email");
+            throw new Error("Failed to add email to queue");
         }
 
         const responseData = await response.json();
         return responseData.data;
     } catch (error) {
-        console.error("Error sending email:", error);
+        console.error("Error adding email to queue:", error);
         throw error;
     }
 }

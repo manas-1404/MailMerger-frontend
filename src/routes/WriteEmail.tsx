@@ -3,7 +3,7 @@ import type {Email} from "../types/email.ts";
 import type {ListOfTemplates, Template} from "../types/template.ts";
 
 import KeyValueCard from "../components/KeyValueCard.tsx";
-import {sendEmailNow} from "../api/backend.ts";
+import {addToEmailQueue, sendEmailNow} from "../api/backend.ts";
 
 function WriteEmail( {templates}: ListOfTemplates ) {
     const [formData, setFormData] = useState<Email>({
@@ -168,7 +168,6 @@ function WriteEmail( {templates}: ListOfTemplates ) {
         }
 
         try {
-            // TODO: add method from the utils to call backend aip
             console.log("Sending email...\n", formData);
 
             const responseData = await sendEmailNow(formData);
@@ -201,8 +200,12 @@ function WriteEmail( {templates}: ListOfTemplates ) {
         }
 
         try {
-            // TODO: add method from the utils to call backend aip
             console.log("Sending email...\n", formData);
+
+            const responseData = await addToEmailQueue(formData);
+
+            console.log("Email added to queue successfully:", responseData);
+
             alert("Email added to queue!");
 
             setMapping({});
