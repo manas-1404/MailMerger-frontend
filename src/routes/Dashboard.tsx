@@ -36,7 +36,7 @@ function Dashboard(){
                     <button onClick={() => navigate('/quick-email')}>📨 Send Quick Email</button>
                     <button onClick={() => navigate('/write-email')}>📝 Write Email</button>
                     <button onClick={() => navigate('/send-queue')}>📦 Send Email Queue</button>
-                    <button onClick={() => navigate('/create-template')}>📂 Create Email Template</button>
+                    <button onClick={() => navigate('/make-template')}>📂 Create Email Template</button>
                 </div>
             </div>
         </div>

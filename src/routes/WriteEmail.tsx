@@ -200,7 +200,7 @@ function WriteEmail( {templates}: ListOfTemplates ) {
         }
 
         try {
-            console.log("Sending email...\n", formData);
+            console.log("Adding email to queue...\n", formData);
 
             const responseData = await addToEmailQueue(formData);
 
@@ -318,13 +318,13 @@ function WriteEmail( {templates}: ListOfTemplates ) {
                     className="bg-yellow-600 hover:bg-yellow-700 px-6 py-2 rounded"
                     onClick={handleAddToQueue}
                 >
-                    🕒 Add to Queue
+                    Add to Queue
                 </button>
                 <button
                     className="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded"
                     onClick={handleSendNow}
                 >
-                    🚀 Send Now
+                    Send Now
                 </button>
             </div>
         </div>

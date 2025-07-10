@@ -1,5 +1,6 @@
 import type {Email} from "../types/email.ts";
 import {getJwtTokenFromLocalStorage, getRefreshTokenFromLocalStorage} from "./utils.ts";
+import type {Template} from "../types/template.ts";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -81,6 +82,31 @@ export const addToEmailQueue = async (email: Email) => {
         return responseData.data;
     } catch (error) {
         console.error("Error adding email to queue:", error);
+        throw error;
+    }
+}
+
+export const saveEmailTemplate = async (templateObject: Template) => {
+    try{
+        const response = await fetch(`${BASE_URL}/api/templates/add-template`, {
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getJwtTokenFromLocalStorage()}`
+            },
+            body: JSON.stringify(templateObject),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to save email template");
+        }
+
+        const responseData = await response.json();
+
+        return responseData.data;
+
+    } catch (error) {
+        console.log("Error saving email template:", error);
         throw error;
     }
 }
