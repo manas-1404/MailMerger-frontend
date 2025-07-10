@@ -86,6 +86,31 @@ export const addToEmailQueue = async (email: Email) => {
     }
 }
 
+export const getEmailTemplates = async () => {
+    try{
+        const response = await fetch(`${BASE_URL}/api/templates/get-all-templates`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${getJwtTokenFromLocalStorage()}`
+            }
+        }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch email templates");
+        }
+
+        const responseData = await response.json();
+
+        const templatesList = responseData.data.templates;
+
+        return templatesList;
+    } catch (error) {
+        console.error("Error fetching email templates:", error);
+        throw error;
+    }
+}
+
 export const saveEmailTemplate = async (templateObject: Template) => {
     try{
         const response = await fetch(`${BASE_URL}/api/templates/add-template`, {

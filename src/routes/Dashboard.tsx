@@ -6,21 +6,22 @@ import {getNewJwtTokens} from "../api/backend.ts";
 function Dashboard(){
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const checkAndRefreshToken = async () => {
-            const token = localStorage.getItem("jwt_token");
+    const checkAndRefreshToken = async () => {
+        const token = localStorage.getItem("jwt_token");
 
-            if (!token || isJwtExpired(token)) {
-                try {
-                    await getNewJwtTokens();
-                    console.log("JWT token refreshed successfully.");
-                } catch (error) {
-                    console.error("Failed to refresh JWT token:", error);
-                    console.log(error);
-                    navigate("/login");
-                }
+        if (!token || isJwtExpired(token)) {
+            try {
+                await getNewJwtTokens();
+                console.log("JWT token refreshed successfully.");
+            } catch (error) {
+                console.error("Failed to refresh JWT token:", error);
+                console.log(error);
+                navigate("/login");
             }
-        };
+        }
+    };
+
+    useEffect(() => {
 
         checkAndRefreshToken();
     }, []);
