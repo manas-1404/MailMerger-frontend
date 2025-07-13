@@ -135,3 +135,58 @@ export const saveEmailTemplate = async (templateObject: Template) => {
         throw error;
     }
 }
+
+export const updateEmailTemplate = async (templateObject: Template) => {
+    try{
+        const response = await fetch(`${BASE_URL}/api/templates/update-template`, {
+            method: "PATCH",
+            headers:{
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${getJwtTokenFromLocalStorage()}`
+            },
+            body: JSON.stringify(templateObject),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to save email template");
+        }
+
+        const responseData = await response.json();
+
+        const updatedTemplateId: number = responseData.data.template_id;
+
+        return updatedTemplateId;
+
+    } catch (error) {
+        console.log("Error saving email template:", error);
+        throw error;
+    }
+}
+
+export const deleteEmailTemplates = async (templateIdList: number[]) => {
+    try{
+        const response = await fetch(`${BASE_URL}/api/templates/delete-template`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${getJwtTokenFromLocalStorage()}`,
+                    "Content-Type": "application/json"
+                },
+            body: JSON.stringify(templateIdList)
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to delete email template");
+        }
+
+        const responseData = await response.json();
+
+        const deletedTemplatesList: number[] = responseData.data.template_ids;
+
+        return deletedTemplatesList;
+
+    } catch (error) {
+        console.error("Error fetching email templates:", error);
+        throw error;
+    }
+}

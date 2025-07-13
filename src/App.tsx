@@ -7,6 +7,7 @@ import './App.css'
 import Login from "./routes/Login.tsx";
 import Signup from "./routes/Signup.tsx";
 import MakeTemplate from "./routes/MakeTemplate.tsx";
+import ManageTemplates from "./routes/ManageTemplates.tsx";
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="write-email" element={<WriteEmail />} />
                 <Route path="make-template" element={<MakeTemplate />} />
+                <Route path="manage-templates" element={<ManageTemplates />} />
             </Route>
         </Routes>
     </>

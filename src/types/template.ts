@@ -15,3 +15,10 @@ export type TemplateKeyValue = {
     onValueChange?: (parameter1: string, parameter2: string) => void;
     isInvalid?: boolean;
 }
+
+export type EditableTemplate = {
+    template: Template;
+    selected: boolean;
+    onSelect: (id: number) => void;
+    onEdit: (template: Template) => void;
+};

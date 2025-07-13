@@ -1,11 +1,24 @@
 import {useState, useEffect, type ChangeEvent} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 
 import type {Template} from "../types/template.ts";
-import {saveEmailTemplate} from "../api/backend.ts";
+import {saveEmailTemplate, updateEmailTemplate} from "../api/backend.ts";
 
 export default function MakeTemplate() {
+
+    const location = useLocation();
+    const editTemplate = location.state?.emailTemplate as Template | undefined;
+
+    const navigate = useNavigate();
+
     const [body, setBody] = useState("");
     const [templateKeys, setTemplateKeys] = useState<string[]>([]);
+
+    useEffect(() => {
+        if (editTemplate) {
+            setBody(editTemplate.t_body);
+        }
+    }, [editTemplate]);
 
     useEffect(() => {
         const matches = body.match(/{{\s*([\w_]+)\s*}}/g) || [];
@@ -22,9 +35,23 @@ export default function MakeTemplate() {
         }
 
         try{
-            const templateObject: Template = {t_body: body, t_key: templateKeys.join(",")};
+            const templateObject: Template = {
+                t_body: body,
+                t_key: templateKeys.join(","),
+                ...(editTemplate?.template_id && { template_id: editTemplate.template_id }),
+                ...(editTemplate?.uid && { uid: editTemplate.uid }),
+            };
 
-            const responseData = await saveEmailTemplate(templateObject);
+            let responseData;
+
+            if (editTemplate){
+                responseData = await updateEmailTemplate(templateObject);
+
+                navigate("/make-template", {replace: true});
+
+            }else{
+                responseData = await saveEmailTemplate(templateObject);
+            }
 
             console.log("Response saved! ", responseData);
 
@@ -36,7 +63,6 @@ export default function MakeTemplate() {
             console.error("Error saving template:", error);
             alert("Failed to create template. Please try again.");
         }
-
 
     };
 

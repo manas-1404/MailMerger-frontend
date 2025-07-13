@@ -34,10 +34,10 @@ function Dashboard(){
                 <h2 className="text-white text-xl mb-8">Welcome to your email dashboard.</h2>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-20">
-                    <button onClick={() => navigate('/quick-email')}>📨 Send Quick Email</button>
-                    <button onClick={() => navigate('/write-email')}>📝 Write Email</button>
-                    <button onClick={() => navigate('/send-queue')}>📦 Send Email Queue</button>
-                    <button onClick={() => navigate('/make-template')}>📂 Create Email Template</button>
+                    <button onClick={() => navigate('/write-email')}>Write Email</button>
+                    <button onClick={() => navigate('/send-queue')}>Send Email Queue</button>
+                    <button onClick={() => navigate('/make-template')}>Create Email Template</button>
+                    <button onClick={() => navigate('/manage-templates')}>Manage Email Templates</button>
                 </div>
             </div>
         </div>
