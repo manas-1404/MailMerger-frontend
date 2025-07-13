@@ -1,11 +1,32 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import type {Email} from "../types/email.ts";
 import type {ListOfTemplates, Template} from "../types/template.ts";
 
 import KeyValueCard from "../components/KeyValueCard.tsx";
-import {addToEmailQueue, sendEmailNow} from "../api/backend.ts";
+import {addToEmailQueue, getEmailTemplates, sendEmailNow} from "../api/backend.ts";
 
-function WriteEmail( {templates}: ListOfTemplates ) {
+function WriteEmail() {
+
+    useEffect(() => {
+
+        const loadEmailTemplates = async () =>{
+            try{
+                 const templatesList: ListOfTemplates = await getEmailTemplates();
+
+                 setTemplatesList(templatesList);
+
+                 console.log("the templates list is: \n", templatesList);
+
+            } catch (error) {
+                console.error("Error fetching email templates:", error);
+                alert("Failed to load email templates. Please try again later.");
+            }
+        }
+
+        loadEmailTemplates();
+
+    }, [])
+
     const [formData, setFormData] = useState<Email>({
         to_email: "",
         cc_email: "",
@@ -17,6 +38,18 @@ function WriteEmail( {templates}: ListOfTemplates ) {
     const [mapping, setMapping] = useState<Record<string, string>>({});
 
     const [invalidMappingKeys, setInvalidMappingKeys] = useState<string[]>([]);
+
+    const [templatesList, setTemplatesList] = useState<ListOfTemplates>(
+        {templates: [
+                {
+                    template_id: -100,
+                    uid: -100,
+                    t_key: "Start by making a template",
+                    t_body: "Make sure to use the format {{key_name}} for template keys."
+                }
+            ]
+        }
+    );
 
     const [templateBackup, setTemplateBackup] = useState<string>("");
 
@@ -38,7 +71,7 @@ function WriteEmail( {templates}: ListOfTemplates ) {
             return;
         }
 
-        const selectedTemplate: Template | undefined = templates.find(t => t.tid === Number(selectedDropDownValue));
+        const selectedTemplate: Template | undefined = templatesList.templates.find(t => t.template_id === Number(selectedDropDownValue));
 
         if (selectedTemplate) {
 
@@ -256,9 +289,9 @@ function WriteEmail( {templates}: ListOfTemplates ) {
                             onChange={handleTemplateDropdown}
                             className="bg-gray-800 text-white p-3 rounded w-full border border-gray-700"
                         >
-                            <option value="-1">Select a Template</option>
-                            {templates.map((t) => (
-                                <option key={t.tid} value={t.tid}>
+                            <option key="default" value="-1">Select a Template</option>
+                            {templatesList.templates.map((t) => (
+                                <option key={t.template_id} value={t.template_id}>
                                     {t.t_key}
                                 </option>
                             ))}

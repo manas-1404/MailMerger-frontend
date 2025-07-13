@@ -1,6 +1,6 @@
 import type {Email} from "../types/email.ts";
 import {getJwtTokenFromLocalStorage, getRefreshTokenFromLocalStorage} from "./utils.ts";
-import type {Template} from "../types/template.ts";
+import type {ListOfTemplates, Template} from "../types/template.ts";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -102,7 +102,7 @@ export const getEmailTemplates = async () => {
 
         const responseData = await response.json();
 
-        const templatesList = responseData.data.templates;
+        const templatesList: ListOfTemplates = {templates: responseData.data.templates};
 
         return templatesList;
     } catch (error) {
