@@ -190,3 +190,77 @@ export const deleteEmailTemplates = async (templateIdList: number[]) => {
         throw error;
     }
 }
+
+export const sendQueuedEmails = async (email_ids: number[]) => {
+    try {
+
+        console.log("Sending queued emails with IDs:", email_ids);
+        const response = await fetch(`${BASE_URL}/api/queue/send-queued-emails`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${getJwtTokenFromLocalStorage()}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(email_ids),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to send queued emails");
+        }
+
+        const responseData = await response.json();
+
+        const emails: Email[] = responseData.data.emails;
+
+        return emails;
+    } catch (error) {
+        console.error("Error sending queued emails:", error);
+        throw error;
+    }
+};
+
+export const getQueuedEmails = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/api/queue/get-email-queue`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${getJwtTokenFromLocalStorage()}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch queued emails");
+        }
+
+        const responseData = await response.json();
+
+        const emails: Email[] = responseData.data.emails;
+
+        return emails;
+    } catch (error) {
+        console.error("Error fetching queued emails:", error);
+        throw error;
+    }
+};
+
+export const deleteQueuedEmails = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/api/queue/get-email-queue`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${getJwtTokenFromLocalStorage()}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch queued emails");
+        }
+
+        const responseData = await response.json();
+
+        return responseData.data.emails;
+    } catch (error) {
+        console.error("Error fetching queued emails:", error);
+        throw error;
+    }
+};

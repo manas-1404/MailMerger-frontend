@@ -9,3 +9,10 @@ export type Email = {
     bcc_email?: string;         
     send_at?: string;
 };
+
+export type QueuedEmail = {
+    email: Email;
+    selected: boolean;
+    onSelect: (eid: number) => void;
+    onEdit: (email: Email) => void;
+};

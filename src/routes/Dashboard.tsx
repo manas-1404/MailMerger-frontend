@@ -35,7 +35,7 @@ function Dashboard(){
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-20">
                     <button onClick={() => navigate('/write-email')}>Write Email</button>
-                    <button onClick={() => navigate('/send-queue')}>Send Email Queue</button>
+                    <button onClick={() => navigate('/manage-email-queue')}>Send Email Queue</button>
                     <button onClick={() => navigate('/make-template')}>Create Email Template</button>
                     <button onClick={() => navigate('/manage-templates')}>Manage Email Templates</button>
                 </div>

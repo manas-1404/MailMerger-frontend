@@ -8,6 +8,7 @@ import Login from "./routes/Login.tsx";
 import Signup from "./routes/Signup.tsx";
 import MakeTemplate from "./routes/MakeTemplate.tsx";
 import ManageTemplates from "./routes/ManageTemplates.tsx";
+import ManageQueuedEmails from "./routes/ManageQueuedEmails.tsx";
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
                 <Route path="write-email" element={<WriteEmail />} />
                 <Route path="make-template" element={<MakeTemplate />} />
                 <Route path="manage-templates" element={<ManageTemplates />} />
+                <Route path="manage-email-queue" element={<ManageQueuedEmails />} />
             </Route>
         </Routes>
     </>
