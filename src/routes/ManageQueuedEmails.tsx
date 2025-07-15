@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getQueuedEmails, sendQueuedEmails } from "../api/backend.ts";
+import { getQueuedEmails, sendQueuedEmails, deleteQueuedEmails } from "../api/backend.ts";
 import type { Email } from "../types/email";
 import EmailCard from "../components/EmailCard";
 import { useNavigate } from "react-router-dom";
@@ -26,9 +26,8 @@ export default function ManageQueuedEmails() {
     const handleDelete = async () => {
         if (selected.length === 0) return;
         try {
-            // TODO: call api from backend to delete emails
-            // const deletedIds: number[] = await deleteQueuedEmails(selected);
-            // setEmails(prev => prev.filter(email => !deletedIds.includes(email.eid!)));
+            const deletedIds: number[] = await deleteQueuedEmails(selected);
+            setEmails(prevState => prevState.filter(email => !deletedIds.includes(email.eid!)));
             setSelected([]);
             alert("Selected emails deleted.");
         } catch (err) {

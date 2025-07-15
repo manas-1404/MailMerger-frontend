@@ -243,22 +243,24 @@ export const getQueuedEmails = async () => {
     }
 };
 
-export const deleteQueuedEmails = async () => {
+export const deleteQueuedEmails = async (emailIdList: number[]) => {
     try {
-        const response = await fetch(`${BASE_URL}/api/queue/get-email-queue`, {
-            method: "GET",
+        const response = await fetch(`${BASE_URL}/api/queue/delete-queue-email`, {
+            method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${getJwtTokenFromLocalStorage()}`,
+                "Content-Type": "application/json",
             },
+            body: JSON.stringify(emailIdList)
         });
 
         if (!response.ok) {
-            throw new Error("Failed to fetch queued emails");
+            throw new Error("Failed to delete queued emails");
         }
 
         const responseData = await response.json();
 
-        return responseData.data.emails;
+        return responseData.data.deleted_emails_ids;
     } catch (error) {
         console.error("Error fetching queued emails:", error);
         throw error;
