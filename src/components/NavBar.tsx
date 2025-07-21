@@ -58,6 +58,18 @@ export default function Navbar() {
                                     Create Template
                                 </NavLink>
                             </li>
+                            <li>
+                                <NavLink
+                                    to="/upload-file"
+                                    className={({ isActive }) =>
+                                        `block py-2 pr-4 pl-3 duration-200 ${
+                                            isActive ? "text-blue-400" : "text-gray-300"
+                                        } border-b border-gray-100 hover:bg-gray-800 lg:hover:bg-transparent lg:border-0 hover:text-blue-400 lg:p-0`
+                                    }
+                                >
+                                    Upload Resume
+                                </NavLink>
+                            </li>
                         </ul>
                     </div>
                 </div>

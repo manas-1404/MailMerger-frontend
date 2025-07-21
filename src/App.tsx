@@ -9,6 +9,7 @@ import Signup from "./routes/Signup.tsx";
 import MakeTemplate from "./routes/MakeTemplate.tsx";
 import ManageTemplates from "./routes/ManageTemplates.tsx";
 import ManageQueuedEmails from "./routes/ManageQueuedEmails.tsx";
+import UploadFilePage from "./routes/FileUpload.tsx";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
                 <Route path="make-template" element={<MakeTemplate />} />
                 <Route path="manage-templates" element={<ManageTemplates />} />
                 <Route path="manage-email-queue" element={<ManageQueuedEmails />} />
+                <Route path="upload-file" element={<UploadFilePage />} />
             </Route>
         </Routes>
     </>
