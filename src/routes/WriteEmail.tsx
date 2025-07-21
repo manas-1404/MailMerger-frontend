@@ -33,6 +33,7 @@ function WriteEmail() {
         bcc_email: "",
         subject: "",
         body: "",
+        include_resume: false,
     });
 
     const [mapping, setMapping] = useState<Record<string, string>>({});
@@ -216,6 +217,7 @@ function WriteEmail() {
                 bcc_email: "",
                 subject: "",
                 body: "",
+                include_resume: false,
             });
             setTemplateBackup("");
             setInvalidMappingKeys([]);
@@ -248,6 +250,7 @@ function WriteEmail() {
                 bcc_email: "",
                 subject: "",
                 body: "",
+                include_resume: false,
             });
             setTemplateBackup("");
             setInvalidMappingKeys([]);
@@ -280,6 +283,24 @@ function WriteEmail() {
                                 required={field === "to_email" || field === "subject"}
                             />
                         ))}
+                    </div>
+                    <div className="flex items-center space-x-3">
+                        <input
+                            type="checkbox"
+                            id="include_resume"
+                            name="include_resume"
+                            checked={formData.include_resume}
+                            onChange={(e) =>
+                                setFormData((prevState) => ({
+                                    ...prevState,
+                                    include_resume: e.target.checked,
+                                }))
+                            }
+                            className="form-checkbox h-5 w-5 text-blue-600"
+                        />
+                        <label htmlFor="include_resume" className="text-sm font-medium">
+                            Include resume with the email
+                        </label>
                     </div>
 
                     {/* choose template dropdown */}

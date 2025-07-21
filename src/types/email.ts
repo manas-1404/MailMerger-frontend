@@ -8,6 +8,7 @@ export type Email = {
     cc_email?: string;          
     bcc_email?: string;         
     send_at?: string;
+    include_resume?: boolean;
 };
 
 export type QueuedEmail = {
