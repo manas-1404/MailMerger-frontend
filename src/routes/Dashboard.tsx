@@ -1,13 +1,24 @@
 import { useNavigate} from "react-router-dom";
 import {useEffect} from "react";
-import {isJwtExpired} from "../api/utils.ts";
-import {getNewJwtTokens} from "../api/backend.ts";
+import {isJwtExpired, isRefreshTokenExpired} from "../api/utils.ts";
+import {getNewJwtTokens, getNewRefreshAndJWTokens} from "../api/backend.ts";
 
 function Dashboard(){
     const navigate = useNavigate();
 
     const checkAndRefreshToken = async () => {
         const token = localStorage.getItem("jwt_token");
+        const refresh_token = localStorage.getItem("refresh_token");
+
+        if (!refresh_token || isRefreshTokenExpired(refresh_token)){
+            try {
+                await getNewRefreshAndJWTokens()
+            } catch (error) {
+                console.error("Failed to refresh tokens:", error);
+                console.log(error);
+                navigate("/login");
+            }
+        }
 
         if (!token || isJwtExpired(token)) {
             try {

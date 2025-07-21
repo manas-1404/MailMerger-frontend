@@ -40,6 +40,38 @@ export const getNewJwtTokens = async () => {
     return jwtToken;
 }
 
+
+export const getNewRefreshAndJWTokens = async () => {
+    const response = await fetch(`${BASE_URL}/api/auth/renew-refresh-and-jwt-token`, {
+        // credentials: "include",
+        method: "GET",
+        headers:{
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${getRefreshTokenFromLocalStorage()}`
+        }
+    });
+
+    console.log("Expired Refresh token is: ", getRefreshTokenFromLocalStorage());
+
+    if (!response.ok) {
+        console.log(response);
+        throw new Error("Failed to refresh JWT token");
+    }
+
+    const responseData = await response.json();
+
+    const jwtToken = responseData.data.jwt_token;
+    const refreshToken = responseData.data.refresh_token;
+
+    localStorage.setItem("jwt_token", jwtToken);
+    localStorage.setItem("refresh_token", refreshToken);
+
+    console.log("jwt token is: ", jwtToken);
+    console.log("new refresh token is: ", refreshToken);
+
+    return jwtToken;
+}
+
 export const sendEmailNow = async (email: Email) => {
     try {
         const response = await fetch(`${BASE_URL}/api/email/send-email-now`, {
