@@ -1,31 +1,9 @@
-import { useState, useEffect } from "react";
-import { oauthSignup } from "../api/backend.ts";
-import type { SignUp } from "../types/signup.ts";
-import { userSignUp } from "../api/signup.ts";
-import { useNavigate } from "react-router-dom";
-
-const getPasswordChecks = (password: string) => [
-    {
-        label: "At least 8 characters",
-        isValid: password.length >= 8,
-    },
-    {
-        label: "At least one uppercase letter",
-        isValid: /[A-Z]/.test(password),
-    },
-    {
-        label: "At least one lowercase letter",
-        isValid: /[a-z]/.test(password),
-    },
-    {
-        label: "At least one number",
-        isValid: /[0-9]/.test(password),
-    },
-    {
-        label: "At least one special character (!@#$%^&*)",
-        isValid: /[!@#$%^&*]/.test(password),
-    },
-];
+import {useState} from "react";
+import {oauthSignup} from "../api/backend.ts";
+import type {SignUp} from "../types/signup.ts";
+import {userSignUp} from "../api/signup.ts";
+import {useNavigate} from "react-router-dom";
+import {getPasswordChecks} from "../api/utils.ts";
 
 export default function Signup() {
     const [name, setName] = useState("");

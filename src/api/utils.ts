@@ -46,3 +46,26 @@ export function isRefreshTokenExpired(token: string): boolean {
         return true;
     }
 }
+
+export const getPasswordChecks = (password: string) => [
+    {
+        label: "At least 8 characters",
+        isValid: password.length >= 8,
+    },
+    {
+        label: "At least one uppercase letter",
+        isValid: /[A-Z]/.test(password),
+    },
+    {
+        label: "At least one lowercase letter",
+        isValid: /[a-z]/.test(password),
+    },
+    {
+        label: "At least one number",
+        isValid: /[0-9]/.test(password),
+    },
+    {
+        label: "At least one special character (!@#$%^&*)",
+        isValid: /[!@#$%^&*]/.test(password),
+    },
+];
