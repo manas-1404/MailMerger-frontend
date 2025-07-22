@@ -7,14 +7,16 @@ export default function Navbar() {
                 <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
 
                     <Link to="/" className="flex items-center">
-                        <img
-                            src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-                            className="mr-3 h-12"
-                            alt="MailWizard Logo"
-                        />
+                        <div className="flex items-center justify-center bg-white rounded-full overflow-hidden h-14 w-24 mr-3">
+                            <img
+                                src="/mailstorm_logo.png"
+                                className="object-contain h-15 w-40"
+                                alt="MailStorm Logo"
+                            />
+                        </div>
                         <span className="text-white font-semibold text-lg hidden sm:block">
-              MailWizard
-            </span>
+                            MailStorm
+                        </span>
                     </Link>
 
                     <div
