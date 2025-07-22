@@ -60,6 +60,7 @@ export const getNewRefreshAndJWTokens = async () => {
 
     const responseData = await response.json();
 
+    const userName = responseData.data.user_name;
     const jwtToken = responseData.data.jwt_token;
     const refreshToken = responseData.data.refresh_token;
 
@@ -69,7 +70,7 @@ export const getNewRefreshAndJWTokens = async () => {
     console.log("jwt token is: ", jwtToken);
     console.log("new refresh token is: ", refreshToken);
 
-    return jwtToken;
+    return userName;
 }
 
 export const sendEmailNow = async (email: Email) => {

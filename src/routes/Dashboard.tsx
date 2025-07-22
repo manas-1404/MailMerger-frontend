@@ -1,10 +1,20 @@
-import { useNavigate} from "react-router-dom";
-import {useEffect} from "react";
-import {isJwtExpired, isRefreshTokenExpired} from "../api/utils.ts";
+import { useNavigate, useLocation} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {isJwtExpired, isRefreshTokenExpired, setLocalStorageTokens} from "../api/utils.ts";
 import {getNewJwtTokens, getNewRefreshAndJWTokens} from "../api/backend.ts";
 
 function Dashboard(){
     const navigate = useNavigate();
+    const userNameFromLogin = useLocation().state?.username || "";
+    const [userName, setUserName] = useState<string>(localStorage.getItem("username") || "Username");
+
+    useEffect(() => {
+
+        if(userNameFromLogin){
+            setUserName(userNameFromLogin);
+            setLocalStorageTokens("username", userNameFromLogin);
+        }
+    }, [userNameFromLogin]);
 
     const checkAndRefreshToken = async () => {
         const token = localStorage.getItem("jwt_token");
@@ -12,7 +22,9 @@ function Dashboard(){
 
         if (!refresh_token || isRefreshTokenExpired(refresh_token)){
             try {
-                await getNewRefreshAndJWTokens()
+                const userName: string = await getNewRefreshAndJWTokens()
+                setUserName(userName);
+                setLocalStorageTokens("username", userName);
             } catch (error) {
                 console.error("Failed to refresh tokens:", error);
                 console.log(error);
@@ -41,7 +53,7 @@ function Dashboard(){
     return (
         <div >
             <div className="max-w-3xl mx-auto text-center">
-                <h1 className="text-3xl font-bold text-white mb-2">Hello, Username</h1>
+                <h1 className="text-3xl font-bold text-white mb-2">Hello, {userName}</h1>
                 <h2 className="text-white text-xl mb-8">Welcome to your email dashboard.</h2>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-20">
