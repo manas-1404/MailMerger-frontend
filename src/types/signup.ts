@@ -3,3 +3,8 @@ export type SignUp = {
     email: string,
     password: string,
 }
+
+export type PasswordValidation = {
+    label: string;
+    isValid: boolean;
+};
