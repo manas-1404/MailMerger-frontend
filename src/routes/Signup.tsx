@@ -1,15 +1,38 @@
 import { useState } from "react";
 import { oauthSignup } from "../api/backend.ts";
+import type {SignUp} from "../types/signup.ts";
+import {userSignUp} from "../api/signup.ts";
+import {useNavigate} from "react-router-dom";
 
 export default function Signup() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const navigate = useNavigate();
+
     const handleOauthSignup = () => {
         console.log("OAuth signup initiated");
         oauthSignup();
     };
+
+    const handleSignUp = async () => {
+
+        const signUpData: SignUp = {
+            name: name,
+            email: email.toLowerCase(),
+            password: password
+        }
+
+        const isSignUpSuccess: boolean = await userSignUp(signUpData);
+
+        if (isSignUpSuccess){
+            navigate("/dashboard");
+        } else {
+            alert("Signup failed. Please try again.");
+        }
+
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center text-white">
@@ -41,7 +64,7 @@ export default function Signup() {
                 />
 
                 <button
-                    onClick={() => console.log("Signup with:", name, email, password)}
+                    onClick={handleSignUp}
                     className="w-full bg-green-600 hover:bg-green-700 py-3 rounded font-semibold"
                 >
                     Sign Up

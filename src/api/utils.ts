@@ -18,6 +18,11 @@ export const getRefreshTokenFromLocalStorage = (): string => {
     return refreshToken;
 }
 
+export const setLocalStorageTokens = (key: string, value: string)=> {
+
+    localStorage.setItem(key, value);
+}
+
 export function isJwtExpired(token: string): boolean {
     try {
         const payload = JSON.parse(atob(token.split('.')[1]));
