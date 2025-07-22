@@ -206,9 +206,12 @@ function WriteEmail() {
 
             const responseData = await sendEmailNow(formData);
 
-            console.log("Email sent successfully:", responseData);
-
-            alert("Email sent successfully!");
+            if (responseData){
+                console.log("Email sent successfully:", responseData);
+                alert("Email sent successfully!");
+            }else{
+                alert("Failed to send email. Please ensure you have granted Google OAuth permissions.");
+            }
 
             setMapping({});
             setFormData({

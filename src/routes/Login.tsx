@@ -65,12 +65,6 @@ export default function Login() {
                     className="w-full p-3 mb-2 rounded bg-gray-700 border border-gray-600"
                 />
 
-                {/*{!isFormValid && (*/}
-                {/*    <p className="text-red-400 text-sm mb-3 text-center">*/}
-                {/*        Please fill in both email and password.*/}
-                {/*    </p>*/}
-                {/*)}*/}
-
                 <button
                     onClick={handleLogin}
                     disabled={loading}

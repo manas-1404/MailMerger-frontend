@@ -89,7 +89,13 @@ export const sendEmailNow = async (email: Email) => {
         }
 
         const responseData = await response.json();
-        return responseData.data;
+
+        if (!responseData.success && responseData.data.redirect_url) {
+            window.location.href = responseData.data.redirect_url;
+            return responseData.success;
+        }
+
+        return responseData.success;
     } catch (error) {
         console.error("Error sending email:", error);
         throw error;
