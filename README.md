@@ -10,6 +10,7 @@ MailMerger Frontend is a React + TypeScript web application built with Vite, des
 - [Configuration](#configuration)
 - [Running the Frontend](#running-the-frontend)
 - [Connecting to the Backend](#connecting-to-the-backend)
+- [Backend Repository](#backend-repository)
 - [Usage Guide](#usage-guide)
 - [Project Structure](#project-structure)
 - [ESLint & Code Quality](#eslint--code-quality)
@@ -84,8 +85,7 @@ See the [src/api/](src/api/) directory for details on API integration.
 
 ### Backend Repository
 
-The backend code for this project is available at:  
-**[@manas-1404/MailMerger-backend](https://github.com/manas-1404/MailMerger-backend)**  
+The backend code for this project is available at:  **[@manas-1404/MailMerger-backend](https://github.com/manas-1404/MailMerger-backend)**  
 Please refer to the backend repository for API documentation, setup instructions, and all server-side logic.
 
 ## Usage Guide
