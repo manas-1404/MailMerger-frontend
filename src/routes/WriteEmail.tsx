@@ -1,4 +1,9 @@
 import {useEffect, useState} from "react";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Link from "@tiptap/extension-link";
+import TextAlign from "@tiptap/extension-text-align";
+
 import type {Email} from "../types/email.ts";
 import type {ListOfTemplates, Template} from "../types/template.ts";
 
@@ -54,6 +59,19 @@ function WriteEmail() {
 
     const [templateBackup, setTemplateBackup] = useState<string>("");
 
+    const editor = useEditor({
+        extensions: [
+            StarterKit,
+            Link.configure({ openOnClick: false }),
+            TextAlign.configure({ types: ["heading", "paragraph"] }),
+        ],
+        content: formData.body,
+        onUpdate: ({ editor }) => {
+            // keep your formData.body in sync (so sendEmailNow still works unchanged)
+            setFormData((prev) => ({ ...prev, body: editor.getHTML() }));
+        },
+    });
+
     // Handle input changes
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -93,6 +111,9 @@ function WriteEmail() {
                 ...formData,
                 body: selectedTemplate.t_body
             })
+
+            editor.commands.setContent(selectedTemplate.t_body);
+            editor.chain().focus().setTextAlign('left').run();
         }
     }
 
@@ -130,6 +151,8 @@ function WriteEmail() {
             return {...prevState, body: mergedBody};
         })
 
+        editor.commands.setContent(mergedBody);
+        editor.chain().focus().setTextAlign('left').run();
     }
 
     const handleGoBackToTemplate = () => {
@@ -145,6 +168,9 @@ function WriteEmail() {
         });
 
         setMapping(clearedMapping);
+
+        editor.commands.setContent(templateBackup);
+        editor.chain().focus().setTextAlign('left').run();
     }
 
     const isEmailValid = (): boolean => {
@@ -267,9 +293,7 @@ function WriteEmail() {
 
     return (
         <div className="flex flex-col h-screen text-white">
-
             <div className="flex h-[82%] overflow-hidden">
-
                 {/* left side - Email Details */}
                 <div className="flex flex-col w-[43%] p-6 space-y-6 overflow-y-auto border-r border-gray-700">
                     <h2 className="text-3xl font-bold mb-4">✉️ Write Email</h2>
@@ -358,14 +382,107 @@ function WriteEmail() {
                 {/* right side - Email writin Body space */}
                 <div className="w-[57%] p-6 flex flex-col">
                     <label className="block mb-2 font-semibold text-lg">📝 Email Body</label>
-                    <textarea
-                        name="body"
-                        value={formData.body}
-                        onChange={handleChange}
-                        placeholder="Write your email here..."
-                        className="flex-1 bg-gray-800 p-4 rounded w-full h-full border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                        required
-                    />
+                    <div className="flex flex-row flex-wrap gap-2 mb-3 bg-gray-900 p-2 rounded border border-gray-700">
+                        <button
+                            type="button"
+                            onClick={() => editor?.chain().focus().toggleBold().run()}
+                            className={`p-2 rounded ${
+                                editor?.isActive("bold") ? "bg-blue-600" : "bg-gray-700 hover:bg-gray-600"
+                            }`}
+                        >
+                            Bold
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => editor?.chain().focus().toggleItalic().run()}
+                            className={`p-2 rounded ${
+                                editor?.isActive("italic") ? "bg-blue-600" : "bg-gray-700 hover:bg-gray-600"
+                            }`}
+                        >
+                            Italic
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => editor?.chain().focus().toggleBulletList().run()}
+                            className={`p-2 rounded ${
+                                editor?.isActive("bulletList") ? "bg-blue-600" : "bg-gray-700 hover:bg-gray-600"
+                            }`}
+                        >
+                            Bullets
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => editor?.chain().focus().toggleOrderedList().run()}
+                            className={`p-2 rounded ${
+                                editor?.isActive("orderedList") ? "bg-blue-600" : "bg-gray-700 hover:bg-gray-600"
+                            }`}
+                        >
+                            Numbers
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => editor?.chain().focus().setTextAlign("left").run()}
+                            className={`p-2 rounded ${
+                                editor?.isActive({ textAlign: "left" })
+                                    ? "bg-blue-600"
+                                    : "bg-gray-700 hover:bg-gray-600"
+                            }`}
+                        >
+                            Left
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => editor?.chain().focus().setTextAlign("center").run()}
+                            className={`p-2 rounded ${
+                                editor?.isActive({ textAlign: "center" })
+                                    ? "bg-blue-600"
+                                    : "bg-gray-700 hover:bg-gray-600"
+                            }`}
+                        >
+                            Center
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => editor?.chain().focus().setTextAlign("right").run()}
+                            className={`p-2 rounded ${
+                                editor?.isActive({ textAlign: "right" })
+                                    ? "bg-blue-600"
+                                    : "bg-gray-700 hover:bg-gray-600"
+                            }`}
+                        >
+                            Right
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => editor?.chain().focus().setTextAlign("justify").run()}
+                            className={`p-2 rounded ${
+                                editor?.isActive({ textAlign: "justify" })
+                                    ? "bg-blue-600"
+                                    : "bg-gray-700 hover:bg-gray-600"
+                            }`}
+                        >
+                            Justify
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const url = prompt("Enter URL");
+                                if (url) editor?.chain().focus().setLink({ href: url }).run();
+                            }}
+                            className="p-2 rounded bg-gray-700 hover:bg-gray-600"
+                        >
+                            Link
+                        </button>
+                    </div>
+
+                    <div
+                        className="flex-1 border border-gray-700 rounded bg-gray-800 p-4 editor-wrapper"
+                        onClick={() => editor?.chain().focus().run()}
+                    >
+                        <EditorContent editor={editor} className="tiptap" />
+                    </div>
                 </div>
             </div>
 
