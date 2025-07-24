@@ -63,12 +63,14 @@ function WriteEmail() {
         extensions: [
             StarterKit,
             Link.configure({ openOnClick: false }),
-            TextAlign.configure({ types: ["heading", "paragraph"] }),
+            TextAlign.configure({ types: ['heading', 'paragraph'] }),
         ],
         content: formData.body,
+        onCreate: ({ editor }) => {
+            editor.chain().focus().setTextAlign('left').run();
+        },
         onUpdate: ({ editor }) => {
-            // keep your formData.body in sync (so sendEmailNow still works unchanged)
-            setFormData((prev) => ({ ...prev, body: editor.getHTML() }));
+            setFormData(prev => ({ ...prev, body: editor.getHTML() }));
         },
     });
 
