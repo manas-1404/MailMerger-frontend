@@ -5,6 +5,7 @@ MailMerger Frontend is a React + TypeScript web application built with Vite, des
 ## Table of Contents
 
 - [Features](#features)
+- [Demo](#demo)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -26,6 +27,23 @@ MailMerger Frontend is a React + TypeScript web application built with Vite, des
 - **Email Templates:** Create, manage, and delete reusable email templates.
 - **Resume Upload:** Upload PDF resumes (max 5MB) to the backend for processing.
 - **Token Management:** Automatic JWT and refresh token handling to keep sessions valid.
+
+## Demo
+
+The frontend lets users create templates and send personalized emails using saved data.
+
+### Write Email Page
+
+This page allows composing an email, selecting a saved template, filling template fields, and sending or queuing the email.
+
+![Write Email Demo](./public/email_merge.png)
+
+### Create Template Page
+
+This page allows creating and saving dynamic templates with custom keys for personalization.
+
+![Create Template Demo](./public/template.png)
+
 
 ## Prerequisites
 
