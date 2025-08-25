@@ -1,4 +1,4 @@
-import {getJwtTokenFromLocalStorage, getRefreshTokenFromLocalStorage} from "./utils.ts";
+import {getJwtTokenFromLocalStorage} from "./utils.ts";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 

@@ -1,4 +1,4 @@
-import type {Template, EditableTemplate} from "../types/template.ts";
+import type {EditableTemplate} from "../types/template.ts";
 
 export default function TemplateCard({ template, selected, onSelect, onEdit }: EditableTemplate) {
     return (
