@@ -5,11 +5,13 @@ MailMerger Frontend is a React + TypeScript web application built with Vite, des
 ## Table of Contents
 
 - [Features](#features)
+- [Demo](#demo)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Running the Frontend](#running-the-frontend)
 - [Connecting to the Backend](#connecting-to-the-backend)
+- [Backend Repository](#backend-repository)
 - [Usage Guide](#usage-guide)
 - [Project Structure](#project-structure)
 - [ESLint & Code Quality](#eslint--code-quality)
@@ -25,6 +27,23 @@ MailMerger Frontend is a React + TypeScript web application built with Vite, des
 - **Email Templates:** Create, manage, and delete reusable email templates.
 - **Resume Upload:** Upload PDF resumes (max 5MB) to the backend for processing.
 - **Token Management:** Automatic JWT and refresh token handling to keep sessions valid.
+
+## Demo
+
+The frontend lets users create templates and send personalized emails using saved data.
+
+### Write Email Page
+
+This page allows composing an email, selecting a saved template, filling template fields, and sending or queuing the email.
+
+![Write Email Demo](./public/email_merge.png)
+
+### Create Template Page
+
+This page allows creating and saving dynamic templates with custom keys for personalization.
+
+![Create Template Demo](./public/template.png)
+
 
 ## Prerequisites
 
@@ -84,8 +103,7 @@ See the [src/api/](src/api/) directory for details on API integration.
 
 ### Backend Repository
 
-The backend code for this project is available at:  
-**[@manas-1404/MailMerger-backend](https://github.com/manas-1404/MailMerger-backend)**  
+The backend code for this project is available at:  **[@manas-1404/MailMerger-backend](https://github.com/manas-1404/MailMerger-backend)**  
 Please refer to the backend repository for API documentation, setup instructions, and all server-side logic.
 
 ## Usage Guide
