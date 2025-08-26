@@ -10,6 +10,7 @@ import MakeTemplate from "./routes/MakeTemplate.tsx";
 import ManageTemplates from "./routes/ManageTemplates.tsx";
 import ManageQueuedEmails from "./routes/ManageQueuedEmails.tsx";
 import UploadFilePage from "./routes/FileUpload.tsx";
+import OauthFinish from "./routes/OauthFinish.tsx";
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
                 <Route path="manage-templates" element={<ManageTemplates />} />
                 <Route path="manage-email-queue" element={<ManageQueuedEmails />} />
                 <Route path="upload-file" element={<UploadFilePage />} />
+                <Route path="oauth-finish" element={<OauthFinish />} />
             </Route>
         </Routes>
     </>
