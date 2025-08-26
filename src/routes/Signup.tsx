@@ -2,7 +2,7 @@ import {useState} from "react";
 import {oauthSignup} from "../api/backend.ts";
 import type {SignUp} from "../types/signup.ts";
 import {userSignUp} from "../api/signup.ts";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 import {getPasswordChecks} from "../api/utils.ts";
 
 export default function Signup() {
@@ -127,6 +127,13 @@ export default function Signup() {
                 >
                     Sign up with Google
                 </button>
+
+                <p className="mt-6 text-center text-gray-400 text-sm">
+                    Already have an account?{" "}
+                    <Link to="/login" className="text-blue-400 hover:underline">
+                        Log In
+                    </Link>
+                </p>
             </div>
         </div>
     );
