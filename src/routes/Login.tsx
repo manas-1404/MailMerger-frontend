@@ -2,7 +2,7 @@ import { useState } from "react";
 import { oauthLogin } from "../api/backend.ts";
 import { loginUser } from "../api/login.ts";
 import type { LoginData } from "../types/login.ts";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -32,7 +32,7 @@ export default function Login() {
         try {
             const userName = await loginUser(loginDetails);
             console.log("Logged in as:", userName);
-            navigate("/dashboard", { state: { username: userName}});
+            navigate("/dashboard", { state: { username: userName } });
         } catch {
             setError("Login failed. Please check your credentials.");
         } finally {
@@ -87,6 +87,13 @@ export default function Login() {
                 >
                     Sign in with Google
                 </button>
+
+                <p className="mt-6 text-center text-gray-400 text-sm">
+                    Don’t have an account?{" "}
+                    <Link to="/signup" className="text-blue-400 hover:underline">
+                        Sign Up
+                    </Link>
+                </p>
             </div>
         </div>
     );
